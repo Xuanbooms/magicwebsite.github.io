@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location, IP Address, Weather, and Surprise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        #location, #ip, #weather, #surprise {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .rainbow-text {
+            font-size: 24px;
+            animation: rainbow 1s infinite;
+        }
+        @keyframes rainbow {
+            0% { color: red; }
+            14% { color: orange; }
+            28% { color: yellow; }
+            42% { color: green; }
+            57% { color: blue; }
+            71% { color: indigo; }
+            85% { color: violet; }
+            100% { color: red; }
+        }
+        .hidden {
+            display: none;
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            animation: scaleUp 0.5s forwards;
+        }
+        @keyframes scaleUp {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none; /* Initially hidden */
+        }
+        img {
+            max-width: 300px; /* Adjust as needed */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Get Location, IP Address, and Weather</h1>
+    <button onclick="getLocation()">Get My Location</button>
+    <button onclick="getIpAddress()">Get My IP Address</button>
+    <button onclick="showSurprise()">Ms. Quirante's Computer Password</button>
+    <a href="index.html"><button>Click on me to go back ;D</button></a>
+
+    <div id="location"></div>
+    <div id="ip"></div>
+    <div id="weather"></div>
+
+    <div id="surprise" class="image-container hidden">
+        <div class="rainbow-text">You know too much :)</div>
+        <img id="surpriseImage" class="hidden" src="Hmmm.png" alt="">
+    </div>
+
+    <script>
+        const apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById('location').innerHTML = "Browser does not support location retrieval.";
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById('location').innerHTML = `Latitude: ${latitude}<br>Longitude: ${longitude}`;
+            getWeather(latitude, longitude);
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById('location').innerHTML = "User denied the request for location.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById('location').innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById('location').innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById('location').innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+
+        function getIpAddress() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ip').innerHTML = `Your IP Address: ${data.ip}`;
+                })
+                .catch(error => {
+                    document.getElementById('ip').innerHTML = "Unable to retrieve IP address.";
+                });
+        }
+
+        function getWeather(latitude, longitude) {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const weather = `Weather: ${data.weather[0].description}<br>Humidity: ${data.main.humidity}%`;
+                    document.getElementById('weather').innerHTML = weather;
+                })
+                .catch(error => {
+                    document.getElementById('weather').innerHTML = "Unable to retrieve weather data.";
+                });
+        }
+
+        function showSurprise() {
+            const surpriseContainer = document.getElementById('surprise');
+            surpriseContainer.classList.remove('hidden');
+            surpriseContainer.style.display = 'flex';
+            const img = document.getElementById('surpriseImage');
+            img.classList.remove('hidden');
+            img.style.display = 'block';
+        }
+        
+    </script>
+
+</body>
+</html>
