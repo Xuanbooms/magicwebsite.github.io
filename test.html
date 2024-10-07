@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangular Button with Hover Effect</title>
+    <style>
+        body {
+            background-color: black; /* Set background to black */
+            color: white; /* Set text color to white for visibility */
+            font-family: Arial, sans-serif; /* Set a nice font */
+            display: flex; /* Center the content */
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+        }
+        .title {
+            background-color: rgba(66, 133, 244, 0.8); /* Semi-transparent title background */
+            padding: 15px 25px; /* Padding for title */
+            border-radius: 8px; /* Rounded corners for title */
+            margin-bottom: 20px; /* Space between title and button */
+            font-size: 2.5em; /* Title font size */
+            text-align: center; /* Center the text */
+        }
+        .rect-button {
+            padding: 10px 40px; /* Padding for button */
+            font-size: 16px; /* Font size */
+            color: white; /* Text color */
+            background-color: #4285F4; /* Google blue */
+            border: none; /* No border */
+            border-radius: 0; /* No rounding for rectangular shape */
+            cursor: pointer; /* Pointer on hover */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+        }
+        .rect-button:hover {
+            background-color: #357AE8; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title">Welcome to My Page</div> <!-- Title -->
+    <button class="rect-button" onclick="window.location.href='https://www.google.com'">
+        Go to Google
+    </button>
+
+</body>
+</html>
